@@ -12,6 +12,8 @@ import java.text.SimpleDateFormat
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.catalyst.encoders.RowEncoder
 import org.apache.spark.sql.types.{StructField, StructType}
+import transform.ColumnTransformations
+import transform.ColumnTransformations._
 
 object Driver {
   def main(args: Array[String]): Unit = {
@@ -31,20 +33,9 @@ object Driver {
     val headers = things.first()
     things = things.filter(row => row != headers)
 
-    //define transformation functions, transform
-    val titleCase: String => String = _.toLowerCase.capitalize
-    val stripCommas: String => String = _.replaceAll(",", "")
-    val titleUDF = udf(titleCase)
-    val stripCommasUDF = udf(stripCommas)
 
-    //define date input/output formats
-    val formatStr = udf { (str: String) =>
-      val inputFormat = new SimpleDateFormat("m-d-yyyy")
-      val outputFormat = new SimpleDateFormat("mm-dd-yyyy")
-      outputFormat.format(inputFormat.parse(str))
-    }
 
-    //chain transformations as dataframe
+    /*chain transformations as dataframe
     val next = things
       .withColumn("desc_new", titleUDF(col("description")))
       .drop("description")
@@ -55,7 +46,7 @@ object Driver {
       .withColumn("date_new", formatStr(col("date")))
       .drop("date")
       .withColumnRenamed("date_new", "date")
-
+*/
     def getRow(x: String, widths: Array[Int]): Row = {
       var cnt = 0
       var pos = 0
@@ -86,9 +77,7 @@ object Driver {
       .map(line  => getRow(line, Array(10, 15, 10, 4)))(encoder)
       .toDF()
 
-    val pdToDash = udf {(str: String) => str.replaceAll("\\.", "-")}
-    val pdStrip = udf {(str: String) => str.replaceAll("\\.", "")}
-
+/*
     val transform = personFile
       .withColumn("bday_new", pdToDash(col("birthday")))
       .withColumn("jobcode_new", pdStrip(col("jobcode")))
@@ -105,7 +94,6 @@ object Driver {
     //weird way to do a LEFT JOIN, but ok
     val joined = transform.join(ref, Seq("jobcode"), "left_outer")
 
-    joined.show()
-
+    joined.show()*/
   }
 }
