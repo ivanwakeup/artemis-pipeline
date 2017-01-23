@@ -21,6 +21,13 @@ object ColumnTransformations {
     outputFormat.format(inputFormat.parse(str))
   })
 
+  //functions with more than 1 argument have to be curried if you want to use them as a UDF, like so
+  val strToArtemisDate = (format: String) => udf((str: String) => {
+    val inputFormat = new SimpleDateFormat(format)
+    val outputFormat = new SimpleDateFormat("mm-dd-yyyy")
+    outputFormat.format(inputFormat.parse(str))
+  })
+
   val pdToDash = udf((str: String) => {
     str.replaceAll("\\.", "-")
   })
@@ -42,9 +49,27 @@ object ColumnTransformations {
     else str.trim.replaceAll("[^\\p{L}\\p{Nd}]+", "")
   })
 
+  val cleanAddress = udf((str: String) => {
+    val regex = "^[a-zA-Z0-9.-\\s]+$"
+    if(str.matches(regex))
+      str
+    else str.replaceAll("[^-,'A-Za-z0-9 ]", "")
+  })
+
   val replaceSpecial = udf((str: String) => {
     str.trim.replaceAll("[^\\p{L}\\p{Nd}]+", "")
   })
 
-  
+  val mkSrcRecordId = (df: DataFrame, col: Column) => {
+    df.withColumn("src_record_id", col)
+  }
+
+  val mkSrcClaimId = (df: DataFrame, col: Column) => {
+    df.withColumn("src_claim_id", col)
+  }
+
+  val mkSrcMemberId = (df: DataFrame, col: Column) => {
+    df.withColumn("src_member_id", col)
+  }
+
 }

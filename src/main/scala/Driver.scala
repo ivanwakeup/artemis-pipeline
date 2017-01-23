@@ -44,12 +44,13 @@ object Driver {
       .withColumn("cc_new", stripCommas(col("class_code")))
       .drop("class_code")
       .withColumnRenamed("cc_new", "class_code")
-      .withColumn("date_new", formatStr(col("date")))
+      .withColumn("date_new", strToArtemisDate("m-d-yyyy")(col("date")))
       .drop("date")
       .withColumnRenamed("date_new", "date")
 
+    next.show()
 
-    val personFile = new FixedWidthFile("/home/developer/projects/spark/source_person_file.txt", session, Array(10, 15, 10, 4), Array("id", "name", "birthday", "jobcode"))
+ /*   val personFile = new FixedWidthFile("/home/developer/projects/spark/source_person_file.txt", session, Array(10, 15, 10, 4), Array("id", "name", "birthday", "jobcode"))
       .toDataFrame
 
     personFile.show()
@@ -63,6 +64,8 @@ object Driver {
       .withColumnRenamed("bday_new", "birthday")
       .withColumnRenamed("jobcode_new", "jobcode")
 
+    //val cols = Array(col("birthday"), col("jobcode"))
+    //println(cols(0))
 
     val jobref = List(("100", "Beamer"))
     val ref = session.createDataFrame(jobref).toDF("jobcode", "jobname")
@@ -70,6 +73,6 @@ object Driver {
     //weird way to do a LEFT JOIN, but ok
     val joined = transform.join(ref, Seq("jobcode"), "left_outer")
 
-    joined.show()
+    joined.show()*/
   }
 }

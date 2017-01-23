@@ -14,7 +14,7 @@ object Tester {
 
     val strs = Array("5944", "50000", "543", "403334")
 
-    val out = strs.map(ele => t.icd9Format(ele))
+    //val out = strs.map(ele => t.icd9Format(ele))
 
   }
 }
