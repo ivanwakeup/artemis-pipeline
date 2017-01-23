@@ -4,8 +4,8 @@
 		module="artemis-pipeline-build"
 		revision="0.1-SNAPSHOT"
 		status="integration"
-		publication="20170116112305"
-		e:sbtVersion="0.13" e:scalaVersion="2.10"
+		publication="20170120182455"
+		e:scalaVersion="2.10" e:sbtVersion="0.13"
 	>
 		<description>
 		artemis-pipeline-build
