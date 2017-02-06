@@ -72,4 +72,10 @@ object ColumnTransformations {
     df.withColumn("src_member_id", col)
   }
 
+  //idiomatic scala way of mapping the fields
+  def mapFields(df: DataFrame, fields:Map[String, String]): DataFrame = {
+    //foldLeft is a curried function. this was confusing at first without the () around the anonymous CASE function
+    fields.foldLeft(df)({ case (frame, (key, value)) => frame.withColumnRenamed(key, value) })
+  }
+
 }

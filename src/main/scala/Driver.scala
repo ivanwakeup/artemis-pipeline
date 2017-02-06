@@ -50,7 +50,7 @@ object Driver {
 
     next.show()
 
- /*   val personFile = new FixedWidthFile("/home/developer/projects/spark/source_person_file.txt", session, Array(10, 15, 10, 4), Array("id", "name", "birthday", "jobcode"))
+    val personFile = new FixedWidthFile("/home/developer/projects/spark/source_person_file.txt", session, Array(10, 15, 10, 4), Array("id", "name", "birthday", "jobcode"))
       .toDataFrame
 
     personFile.show()
@@ -64,15 +64,12 @@ object Driver {
       .withColumnRenamed("bday_new", "birthday")
       .withColumnRenamed("jobcode_new", "jobcode")
 
-    //val cols = Array(col("birthday"), col("jobcode"))
-    //println(cols(0))
-
     val jobref = List(("100", "Beamer"))
     val ref = session.createDataFrame(jobref).toDF("jobcode", "jobname")
 
     //weird way to do a LEFT JOIN, but ok
     val joined = transform.join(ref, Seq("jobcode"), "left_outer")
 
-    joined.show()*/
+    joined.show()
   }
 }
